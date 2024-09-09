@@ -1,19 +1,31 @@
-Multimodal LLM Test Case Generator
-Overview
+# Multimodal LLM Test Case Generator
+
+## **Overview**
+
 The Multimodal LLM Test Case Generator is a web application that uses a multimodal language model to generate detailed test cases from screenshots. This tool allows users to upload screenshots and optionally provide context, which the application then uses to generate test cases including descriptions, pre-conditions, steps, expected results, and more.
 
-Features
-Upload Multiple Screenshots: Upload multiple screenshots at once for processing.
-Context Input: Provide optional context to enhance the generated test cases.
-Detailed Test Cases: Automatically generate detailed test cases based on the screenshots.
-User-Friendly Interface: Easy-to-use front end with Vue.js for uploading screenshots and displaying test cases.
-Technologies Used
-Backend: Flask, Cohere API
-Frontend: Vue.js, Axios
-Image Processing: PIL (Python Imaging Library)
-Setup
-Backend Setup
-Clone the Repository:
+## **Features**
+
+- **Upload Multiple Screenshots:** Upload multiple screenshots at once for processing.
+- **Context Input:** Provide optional context to enhance the generated test cases.
+- **Detailed Test Cases:** Automatically generate detailed test cases based on the screenshots.
+- **User-Friendly Interface:** Easy-to-use front end with Vue.js for uploading screenshots and displaying test cases.
+
+## **Technologies Used**
+
+- **Backend:** Flask, Cohere API
+- **Frontend:** Vue.js, Axios
+- **Image Processing:** PIL (Python Imaging Library)
+
+## **Setup**
+
+### **Backend Setup**
+
+1. **Clone the Repository:**
+
+   ```bash
+   git clone https://github.com/yourusername/multimodal-llm-test-case-generator.git
+   cd multimodal-llm-test-case-generator
 
 bash
 Copy code
