@@ -1,15 +1,16 @@
 from flask import Flask, request, jsonify
 from flask_cors import CORS
-import openai
+import cohere
 from PIL import Image
 from io import BytesIO
 import base64
+import os
 
 app = Flask(__name__)
 CORS(app)  # Enable CORS for all routes
 
-# Set your OpenAI API key here
-# openai.api_key = 'api key'
+# Set your Cohere API key here
+# cohere_client = cohere.Client('')
 
 # Function to convert image to base64
 def image_to_base64(image):
@@ -18,19 +19,31 @@ def image_to_base64(image):
     img_str = base64.b64encode(buffered.getvalue()).decode('utf-8')
     return img_str
 
-# Function to get image description using a vision-language model
-def extract_image_description(image_path):
-    # Placeholder for actual image description code.
-    description = "A screenshot showing the login page with fields for username and password."
+# Function to generate a descriptive image name
+def generate_description_from_image_name(image_name):
+    # Remove the file extension
+    image_description = os.path.splitext(image_name)[0]
+    
+    # Replace underscores or hyphens with spaces
+    image_description = image_description.replace('_', ' ').replace('-', ' ')
+    
+    # Capitalize first letter of each word for better readability
+    image_description = image_description.title()
+    
+    # Optionally add some contextual information to the description
+    description = image_description
+    
     return description
 
-# Function to generate test case from image description using GPT-4
-def generate_test_case_from_image(image_path, context):
-    image_description = extract_image_description(image_path)
+# Function to generate test case from image description using Cohere
+def generate_test_case_from_image(image_name, context):
+    # Remove the file extension and create a description
+    image_description = os.path.splitext(image_name)[0].replace('_', ' ').replace('-', ' ').title()
 
+    # Full prompt for generating a detailed test case
     prompt = f"""
-    Given the following screen description: "{image_description}", generate a detailed test case using the following structure:
-
+    The image name is "{image_description}". Based on the image name, generate a description of the image and use that description to generate a detailed test case using the following structure:
+    Context: {context}
     Step 1 – Test Case ID: Assign a unique identifier to the test case.
 
     Step 2 – Test Case Description: Briefly describe the goal of this test case based on the screen.
@@ -48,18 +61,22 @@ def generate_test_case_from_image(image_path, context):
     Step 8 – Actual Result: Describe the actual observed result after performing the test.
 
     Step 9 – Status: Indicate if the test passed or failed.
+    Step 10 – : Description about image .
+    
     """
 
     try:
-        response = openai.Completion.create(
-          engine="gpt-3.5-turbo",
-          prompt=prompt,
-          max_tokens=800,
-          temperature=0.5,
+        response = cohere_client.generate(
+            model='command-xlarge-nightly',
+            prompt=prompt,
+            max_tokens=800,
+            temperature=0.5
         )
-        return response.choices[0].text.strip()
-    except openai.error.RateLimitError:
-        return "Rate limit exceeded. Please try again later."
+        test_case_text = response.generations[0].text.strip()
+        return {'description': image_description, 'test_case': test_case_text}
+    except Exception as e:
+        return {'description': image_description, 'test_case': f"An error occurred: {str(e)}"}
+
 
 @app.route('/generate-test-cases', methods=['POST'])
 def generate_test_cases():
@@ -74,8 +91,16 @@ def generate_test_cases():
             image_path = 'temp_image.png'
             image.save(image_path)
             
-            test_case_text = generate_test_case_from_image(image_path, context)
-            test_cases.append({'description': test_case_text})
+            # Generate the description based on the image filename
+            image_description = generate_description_from_image_name(file.filename)
+            
+            # Generate the test case for this image based on the description
+            test_case_text = generate_test_case_from_image(image_description, context)
+            
+            test_cases.append({
+                'description': image_description,
+                'testCase': test_case_text
+            })
     
     return jsonify({'testCases': test_cases})
 
