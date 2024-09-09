@@ -74,30 +74,33 @@ Copy code
 npm run serve
 The frontend will be accessible at http://localhost:8080.
 
-Usage
-Open the Frontend Application:
+## **Usage**
 
-Go to http://localhost:8080 in your web browser.
+1. **Open the Frontend Application:**
 
-Provide Optional Context:
+   Go to [http://localhost:8080](http://localhost:8080) in your web browser.
 
-Enter any relevant context in the provided text area.
+2. **Provide Optional Context:**
 
-Upload Screenshots:
+   Enter any relevant context in the provided text area.
 
-Click on the "Upload Screenshots" button and select one or more image files from your device.
+3. **Upload Screenshots:**
 
-Generate Test Cases:
+   Click on the "Upload Screenshots" button and select one or more image files from your device.
 
-Click on the "Describe Testing Instructions" button to send the screenshots and context to the Flask backend. The backend will process the images and return detailed test cases, which will be displayed on the page.
+4. **Generate Test Cases:**
 
-Review Test Cases:
+   Click on the "Describe Testing Instructions" button to send the screenshots and context to the Flask backend. The backend will process the images and return detailed test cases, which will be displayed on the page.
 
-The generated test cases will be listed below the upload and context input sections.
+5. **Review Test Cases:**
 
-Troubleshooting
-Error Generating Test Cases: Ensure your Cohere API key is correctly set in the app.py file and that the Flask server is running.
-Image Upload Issues: Ensure that the image files are in a supported format (e.g., PNG, JPG) and not corrupted.
+   The generated test cases will be listed below the upload and context input sections.
+
+## **Troubleshooting**
+
+- **Error Generating Test Cases:** Ensure your Cohere API key is correctly set in the `app.py` file and that the Flask server is running.
+- **Image Upload Issues:** Ensure that the image files are in a supported format (e.g., PNG, JPG) and not corrupted.
+
 ![Screenshot 2024-09-09 113906](https://github.com/user-attachments/assets/28411303-9fe5-44d8-b82b-3020c3c8e928)
 ![Screenshot 2024-09-09 102745](https://github.com/user-attachments/assets/ab598786-482d-411b-9837-01c8633c1511)
 
